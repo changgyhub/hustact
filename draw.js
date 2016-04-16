@@ -149,7 +149,7 @@ stage.interactive = true;
 stage.on('mousedown', onDown);
 stage.on('touchstart', onDown);
 
-function onDown (mouse) {
+function onDown (e) {
     moveTox = e.data.getLocalPosition(stage).x;
     moveToy = e.data.getLocalPosition(stage).y;
     var ratio = (moveToy - hero.y) / (moveTox - hero.x);
