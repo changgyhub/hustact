@@ -150,8 +150,8 @@ stage.on('mousedown', onDown);
 stage.on('touchstart', onDown);
 
 function onDown (mouse) {
-    moveTox = renderer.plugins.interaction.mouse.global.x;
-    moveToy = renderer.plugins.interaction.mouse.global.y;
+    moveTox = e.data.getLocalPosition(stage).x;
+    moveToy = e.data.getLocalPosition(stage).y;
     var ratio = (moveToy - hero.y) / (moveTox - hero.x);
     var buffvx = Math.sqrt(5 / (1 + ratio * ratio));
     var buffvy = Math.sqrt(5 - buffvx * buffvx);
