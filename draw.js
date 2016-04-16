@@ -195,7 +195,7 @@ function add_hero(){
 }
 
 function add_verge(){
-    verge.lineStyle(40, 0x5e3a08, 1);
+    verge.lineStyle(60, 0x5e3a08, 1);
     verge.beginFill(0xf8ffc9, 1);
     verge.drawRect(0, 0, windowx, windowy);
     verge.endFill();
@@ -203,7 +203,7 @@ function add_verge(){
 }
 
 function add_exit(){
-    exit.lineStyle(40, 0x00ff00, 1);
+    exit.lineStyle(60, 0x00ff00, 1);
     if (!exitx|| exitx == windowx){  //left or right
         exit.moveTo(exitx,exity-20);
         exit.lineTo(exitx,exity+20);
@@ -286,7 +286,7 @@ function onDown (e) {
             running = true;
             currentScore = 999;
             if (lightScale > 100){
-                lightScale = 100 * (2 - Math.pow (0.5, (lightScale - 100)/20)) * 0.6;
+                lightScale = 100 * (2 - Math.pow (0.5, (lightScale - 100)/20)) * 0.8;
             } else {
                 lightScale = 100;
             }
@@ -443,7 +443,7 @@ function changeLight(l){
 }
 
 function checkCollide(){
-    if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 20 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 20 && Math.abs(hero.x-exitx) < 20)){
+    if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 30 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 30 && Math.abs(hero.x-exitx) < 20)){
         sumScore += currentScore;
         output.text = 'You win !!!\nNext Level\nScore: ' + sumScore;
         output.visible = true;
@@ -475,7 +475,7 @@ function checkCollide(){
             }
             break;
         }
-        if (hero.x < 15 || hero.x > windowx - 15 || hero.y < 15 || hero.y > windowy - 15){
+        if (hero.x < 25 || hero.x > windowx - 25 || hero.y < 25 || hero.y > windowy - 25){
             gameover();
             return;
         }
