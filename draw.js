@@ -1,8 +1,8 @@
 var ox = [50, 150, 250];
 var oy = [50, 150, 250];
 
-var windowx = 300;
-var windowy = 500;
+var windowx = window.innerWidth;
+var windowy = window.innerHeight;
 
 //exitx or exity = 34 or windowx/y - 34
 var exitx = 123;
