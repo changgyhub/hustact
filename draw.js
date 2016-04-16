@@ -111,11 +111,11 @@ function add_verge(){
 function add_exit(){
     exit.lineStyle(40, 0x00ff00, 1);
     if (!exitx|| exitx == windowx){  //left or right
-        exit.moveTo(exitx,exity-10);
-        exit.lineTo(exitx,exity+10);
+        exit.moveTo(exitx,exity-20);
+        exit.lineTo(exitx,exity+20);
     } else {  // up or bottom
-        exit.moveTo(exitx-10, exity);
-        exit.lineTo(exitx+10,exity);
+        exit.moveTo(exitx-20, exity);
+        exit.lineTo(exitx+20,exity);
     }
     container.addChild(exit);
 }
@@ -165,6 +165,8 @@ function onDown (e) {
 // run the render loop
 animate();
 //setTimeout(animate, 200);
+
+
 function animate() {
 
     for (var i = 0; i < ox.length; i++){
@@ -175,6 +177,45 @@ function animate() {
     light.y = hero.y += vy;
     light.x = hero.x += vx;
 
+    checkCollide();
+    
+}
+
+function distance(bx, by){
+    return Math.sqrt( (by - hero.y) * (by - hero.y) + (bx - hero.x) * (bx - hero.x) );
+}
+
+
+
+var output = new PIXI.Text('Game Over',{
+        font : 'bold italic 36px Arial',
+        fill : '#F7EDCA',
+        stroke : '#4a1850',
+        strokeThickness : 5,
+        dropShadow : true,
+        dropShadowColor : '#000000',
+        dropShadowAngle : Math.PI / 6,
+        dropShadowDistance : 6,
+        wordWrap : true,
+        wordWrapWidth : 440
+    });
+output.x = windowx/6;
+output.y = windowy/2;
+
+function checkCollide(){
+    if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 20 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 20 && Math.abs(hero.x-exitx) < 20)){
+        output.text = 'You win';
+        stage.addChild(output);
+        renderer.render(stage);
+        return;
+    }
+    for (var i = 0; i < ox.length; i++){
+        if (distance(obstacles[i].x, obstacles[i].y) < 9 || hero.x < 15 || hero.x > windowx - 15 || hero.y < 15 || hero.y > windowy - 15){
+            stage.addChild(output);
+            renderer.render(stage);
+            return;
+        }
+    }
     renderer.render(stage);
     requestAnimationFrame(animate);
 }
