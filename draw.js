@@ -144,6 +144,7 @@ var light = new PIXI.Graphics();
 var mask = new PIXI.Graphics();
 var bonus_scales = new Array();
 var bonus_scale = new PIXI.Graphics();
+var bonus_light = new PIXI.Graphics();
 
 // Size the renderer to fill the screen
 resize();
@@ -154,6 +155,16 @@ function resize() {
   ratio = Math.min(window.innerWidth/windowx, window.innerHeight/windowy);
   stage.scale.x = stage.scale.y = ratio;
   renderer.resize(Math.ceil(windowx * ratio), Math.ceil(windowy * ratio));
+}
+
+function add_bonus_light(){
+    bonus_light.beginFill(0x0000FF, 1);
+    bonus_light.x = bonus_scalex = Math.random() * windowx * 0.4 + windowx * 0.3;
+    bonus_light.y = bonus_scaley = Math.random() * windowy * 0.4 + windowy * 0.3;
+    bonus_light.drawCircle(0, 0, 5);
+    bonus_light.endFill();
+    bonus_light.visible = true;
+    container.addChild(bonus_light);
 }
 
 function add_bonus_scale(){
@@ -251,6 +262,7 @@ container.addChild(bonus_scales[2]);
 
 add_obstacles();
 add_verge();
+add_bonus_light();
 add_hero();
 add_exit();
 stage.addChild(container);
@@ -290,6 +302,15 @@ function onDown (e) {
             container.addChild(bonus_scales[0]);
             container.addChild(bonus_scales[1]);
             container.addChild(bonus_scales[2]);
+
+            bonus_light.clear();
+            bonus_light.beginFill(0x0000FF, 1);
+            bonus_light.x = bonus_scalex = Math.random() * windowx * 0.4 + windowx * 0.3;
+            bonus_light.y = bonus_scaley = Math.random() * windowy * 0.4 + windowy * 0.3;
+            bonus_light.drawCircle(0, 0, 5);
+            bonus_light.endFill();
+            bonus_light.visible = true;
+
 
             running = true;
             currentScore = 999;
@@ -342,6 +363,16 @@ function onDown (e) {
             container.addChild(bonus_scales[0]);
             container.addChild(bonus_scales[1]);
             container.addChild(bonus_scales[2]);
+
+
+            bonus_light.clear();
+            bonus_light.beginFill(0x0000FF, 1);
+            bonus_light.x = bonus_scalex = Math.random() * windowx * 0.4 + windowx * 0.3;
+            bonus_light.y = bonus_scaley = Math.random() * windowy * 0.4 + windowy * 0.3;
+            bonus_light.drawCircle(0, 0, 5);
+            bonus_light.endFill();
+            bonus_light.visible = true;
+
 
             running = true;
             dead = false;
@@ -450,6 +481,11 @@ function changeLight(l){
     light.endFill();
 }
 
+
+function timeoutChange(){
+    changeLight(lightScale);
+}
+
 function checkCollide(){
     if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 30 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 30 && Math.abs(hero.x-exitx) < 20)){
         sumScore += currentScore;
@@ -461,6 +497,13 @@ function checkCollide(){
         document.getElementById("scoreModalButton").click();
         return;
     }
+
+    if (distance(bonus_light.x, bonus_light.y) < collideDis && bonus_light.visible){
+        changeLight(1500);
+        var timeoutID = window.setTimeout(timeoutChange, 500);
+        bonus_light.visible = false;
+    }
+
 
     for (var i = 0; i < 3; ++i){
         if (distance(bonus_scales[i].x, bonus_scales[i].y) < collideDis && bonus_scales[i].visible){
