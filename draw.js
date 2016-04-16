@@ -252,14 +252,7 @@ function onDown (e) {
             dead = false;
             currentScore = 999;
             lightScale = 120;
-            light.clear()
-            light.lineStyle(0);
-            light.beginFill(0xFFFFFF, 0.5);
-            light.blendMode = PIXI.BLEND_MODES.ADD;
-            light.x = hero.x;
-            light.y = hero.y;
-            light.drawCircle(0, 0, lightScale);
-            light.endFill();
+            changeLight(lightScale);
             generate();
 
             for (var i = 0; i < obstacles.length; i++){
@@ -351,21 +344,29 @@ function distance(bx, by){
     return Math.sqrt( (by - hero.y) * (by - hero.y) + (bx - hero.x) * (bx - hero.x) );
 }
 
-
-
+function changeLight(l){
+    light.clear()
+    light.lineStyle(0);
+    light.beginFill(0xFFFFFF, 0.5);
+    light.blendMode = PIXI.BLEND_MODES.ADD;
+    light.x = hero.x;
+    light.y = hero.y;
+    light.drawCircle(0, 0, l);
+    light.endFill();
+}
 
 function checkCollide(){
     if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 20 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 20 && Math.abs(hero.x-exitx) < 20)){
         output.text = 'You win';
         output.visible = true;
-        light.clear()
-        light.lineStyle(0);
-        light.beginFill(0xFFFFFF, 0.5);
-        light.blendMode = PIXI.BLEND_MODES.ADD;
-        light.x = hero.x;
-        light.y = hero.y;
-        light.drawCircle(0, 0, 999);
-        light.endFill();
+        var expandScale = lightScale;
+        while (expandScale < 1500){
+            setTimeout(changeLight(++expandScale), 2000);
+
+            // Bug : Slowly expand
+
+
+        }
         renderer.render(stage);
         running = false;
         return;
@@ -373,14 +374,7 @@ function checkCollide(){
     for (var i = 0; i < obstacles.length; i++){
         if (distance(obstacles[i].x, obstacles[i].y) < collideDis){
             lightScale -= 20;
-            light.clear()
-            light.lineStyle(0);
-            light.beginFill(0xFFFFFF, 0.5);
-            light.blendMode = PIXI.BLEND_MODES.ADD;
-            light.x = hero.x;
-            light.y = hero.y;
-            light.drawCircle(0, 0, lightScale);
-            light.endFill();
+            changeLight(lightScale);
             obstacles[i].x += - Math.random()*20 + Math.random()*20;
             obstacles[i].y += - Math.random()*20 + Math.random()*20;
             if (!lightScale){
