@@ -1,8 +1,9 @@
 var ox = [50, 150, 250];
 var oy = [50, 150, 250];
 
-var windowx = window.innerWidth;
-var windowy = window.innerHeight;
+var stageRatio = window.innerWidth/window.innerHeight;
+var windowx = stageRatio * 600;
+var windowy = 600;
 
 //exitx or exity = 34 or windowx/y - 34
 var exitx = 123;
