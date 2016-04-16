@@ -1,5 +1,6 @@
 var ox = [50, 150, 250];
 var oy = [50, 150, 250];
+var collideDis = 9.5;
 
 var stageRatio = window.innerWidth/window.innerHeight;
 var windowx = stageRatio * 600;
@@ -210,7 +211,7 @@ function checkCollide(){
         return;
     }
     for (var i = 0; i < ox.length; i++){
-        if (distance(obstacles[i].x, obstacles[i].y) < 9 || hero.x < 15 || hero.x > windowx - 15 || hero.y < 15 || hero.y > windowy - 15){
+        if (distance(obstacles[i].x, obstacles[i].y) < collideDis || hero.x < 15 || hero.x > windowx - 15 || hero.y < 15 || hero.y > windowy - 15){
             stage.addChild(output);
             renderer.render(stage);
             return;
