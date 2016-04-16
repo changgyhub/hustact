@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+     <script src="pixi.js"></script>
+     <meta charset="UTF-8">
+     <title>Game Demo</title>
+</head>
+<body>
+<!-- <script src="loopMusic.js"></script> -->
+<script src="draw.js"></script>
+<script src="fblogin.js"></script>
+<script>
+// var username;
+
+//   function statusChangeCallback(response) {
+//     console.log('statusChangeCallback');
+//     console.log(response);
+//     if (response.status === 'connected') {
+//       testAPI();
+//     } else if (response.status === 'not_authorized') {
+//       document.getElementById('status').innerHTML = 'Please log ' +
+//         'into this app.';
+//     } else {
+//       document.getElementById('status').innerHTML = 'Please log ' +
+//         'into Facebook.';
+//     }
+//   }
+//   function checkLoginState() {
+//     FB.getLoginStatus(function(response) {
+//       statusChangeCallback(response);
+//     });
+//   }
+//    window.fbAsyncInit = function() {
+//     FB.init({
+//       appId      : '1746672375544228',
+//       xfbml      : true,
+//       version    : 'v2.6'
+//     });
+//   };
+//   (function(d, s, id) {
+//     var js, fjs = d.getElementsByTagName(s)[0];
+//     if (d.getElementById(id)) return;
+//     js = d.createElement(s); js.id = id;
+//     js.src = "//connect.facebook.net/en_US/sdk.js";
+//     fjs.parentNode.insertBefore(js, fjs);
+//   }(document, 'script', 'facebook-jssdk'));
+
+//   function testAPI() {
+//     console.log('Welcome!  Fetching your information.... ');
+//     FB.api('/me', function(response) {
+//       console.log('Successful login for: ' + response.name);
+//       document.getElementById('status').innerHTML =
+//         'Thanks for logging in, ' + response.name + '!';
+//         username = response.name;
+//     });
+//   }
+</script>
+
+<!-- Trigger the modal with a button -->
+<button type="button" id="modalButton" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="display: none"></button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+      </fb:login-button>
+
+<div id="status">
+</div>
+      <input class="form-control" id="guestname" type="text"></input>
+      <button id="guestRegister" onclick="guestReg()" class="btn btn-default">Play as guest</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Trigger the modal with a button -->
+<button type="button" id="scoreModalButton" class="btn btn-info btn-lg" data-toggle="modal" data-target="#scoreModal" style="display: none"></button>
+
+<!-- Modal -->
+<div id="scoreModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+
+<div id="status">
+</div>
+        <div id="demo"><h2>Get score board</h2></div>
+
+<button type="button" onclick="loadDoc()">Change Content</button>
+
+<button type="button" onclick="submitScore()">submitsc</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="formhandle.js"></script>
+
+<script>
+// function loadDoc() {
+//   var xhttp = new XMLHttpRequest();
+//   xhttp.onreadystatechange = function() {
+//     if (xhttp.readyState == 4 && xhttp.status == 200) {
+//      document.getElementById("demo").innerHTML = xhttp.responseText;
+//     }
+//   };
+//   xhttp.open("GET", "http://i.cs.hku.hk/~sjhu/hackust2016/scoreboard.php", true);
+//   xhttp.send();
+// }
+</script>
+
+<script>
+// function submitScore() {
+//   var xhttp = new XMLHttpRequest();
+//   xhttp.onreadystatechange = function() {
+//     if (xhttp.readyState == 4 && xhttp.status == 200) {
+//      // alert(xhttp.responseText);
+//     }
+//   };
+//   var d = new Date();
+//   xhttp.open("GET", "http://i.cs.hku.hk/~sjhu/hackust2016/add.php?name="+ username +"&scoretime="+ d.getHours() + "%3A" + d.getMinutes() + "%3A" + d.getSeconds() +"&score=" + sumScore, true);
+//   xhttp.send();
+// }
+</script>
+
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#modalButton').click();
+});z
+</script>
+</html>

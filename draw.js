@@ -450,6 +450,7 @@ function checkCollide(){
         changeLight(1500);
         renderer.render(stage);
         running = false;
+        document.getElementById("scoreModalButton").click();
         return;
     }
 
@@ -491,4 +492,5 @@ function gameover(){
     renderer.render(stage);
     running = false;
     dead = true;
+    document.getElementById("scoreModalButton").click();
 }
