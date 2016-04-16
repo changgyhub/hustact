@@ -1,12 +1,12 @@
 var ox = [50, 150, 250];
 var oy = [50, 150, 250];
 
-var windowx = window.innerWidth;
-var windowy = window.innerHeight;
-
 //exitx or exity = 34 or windowx/y - 34
 var exitx = 123;
-var exity = windowy;
+var exity = 466;
+
+var windowx = 300;
+var windowy = 500;
 
 var moveTox = windowx/2-1, moveToy = windowy/2-1, vx = 0, vy = 0;
 
@@ -43,7 +43,7 @@ var light = new PIXI.Graphics();
 var mask = new PIXI.Graphics();
 
 
- 
+
 // Size the renderer to fill the screen
 resize();
  
@@ -73,7 +73,7 @@ function resize() {
 function add_mask(){
     mask.lineStyle(0);
     mask.beginFill(0x000000, 1);
-    mask.drawRect(4, 4, windowx - 8, windowy - 8);
+    mask.drawRect(38, 38, windowx - 76, windowy - 76);
     mask.endFill();
     stage.addChild(mask);
 }
@@ -102,14 +102,14 @@ function add_hero(){
 function add_verge(){
     verge.lineStyle(8, 0x5e3a08, 1);
     verge.beginFill(0xf8ffc9, 1);
-    verge.drawRect(0, 0, windowx, windowy);
+    verge.drawRect(34, 34, windowx - 68, windowy - 68);
     verge.endFill();
     container.addChild(verge);
 }
 
 function add_exit(){
     exit.lineStyle(8, 0x00ff00, 1);
-    if (!exitx|| exitx == windowx){  //left or right
+    if (exitx == 34 || exitx == windowx - 34){  //left or right
         exit.moveTo(exitx,exity-10);
         exit.lineTo(exitx,exity+10);
     } else {  // up or bottom
