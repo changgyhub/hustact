@@ -1,36 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-     <script src="pixi.js"></script>
-     <meta charset="UTF-8">
-     <title>Game Demo</title>
+<title>Facebook Login JavaScript Example</title>
+<meta charset="UTF-8">
 </head>
-<script>
-  // window.fbAsyncInit = function() {
-  //   FB.init({
-  //     appId      : '1746672375544228',
-  //     xfbml      : true,
-  //     version    : 'v2.6'
-  //   });
-  // };
-
-  // (function(d, s, id){
-  //    var js, fjs = d.getElementsByTagName(s)[0];
-  //    if (d.getElementById(id)) {return;}
-  //    js = d.createElement(s); js.id = id;
-  //    js.src = "//connect.facebook.net/en_US/sdk.js";
-  //    fjs.parentNode.insertBefore(js, fjs);
-  //  }(document, 'script', 'facebook-jssdk'));
-</script>
 <body>
-	<!-- <div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div> -->
-	<script src="draw.js"></script>
-	<script src="loopMusic.js"></script>
+<script src="loopMusic.js"></script>
+<script src="draw.js"></script>
+<script>
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    if (response.status === 'connected') {
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+   window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1746672375544228',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      document.getElementById('status').innerHTML =
+        'Thanks for logging in, ' + response.name + '!';
+    });
+  }
+</script>
+
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+
+<div id="status">
+</div>
+
+<div id="demo"><h2>Get score board</h2></div>
+
+<button type="button" onclick="loadDoc()">Change Content</button>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+     document.getElementById("demo").innerHTML = xhttp.responseText;
+    }
+  };
+  xhttp.open("GET", "http://i.cs.hku.hk/~sjhu/hackust2016/scoreboard.php", true);
+  xhttp.send();
+}
+</script>
+
+
 </body>
 </html>
