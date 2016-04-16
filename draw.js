@@ -8,6 +8,8 @@ var exity = 466;
 var windowx = 300;
 var windowy = 500;
 
+var moveTox = windowx/2-1, moveToy = windowy/2-1, vx = 0, vy = 0;
+
 var renderer = PIXI.autoDetectRenderer(windowx, windowy,{backgroundColor : 0xFFFFFF});
 document.body.appendChild(renderer.view);
 
@@ -96,25 +98,34 @@ stage.addChild(container);
 add_light();
 container.mask = light;
 
-light.interactive = true;
-light.on('mousedown', onDown);
-light.on('touchstart', onDown);
+stage.interactive = true;
+stage.on('mousedown', onDown);
+stage.on('touchstart', onDown);
 
 function onDown (mouse) {
-    alert(mouse.x);
-    hero.x = mouse.x;
-    hero.y = mouse.y;
+    moveTox = renderer.plugins.interaction.mouse.global.x;
+    moveToy = renderer.plugins.interaction.mouse.global.y;
+    var ratio = (moveToy - hero.y) / (moveTox - hero.x);
+    var buffvx = Math.sqrt(5 / (1 + ratio * ratio));
+    var buffvy = Math.sqrt(5 - buffvx * buffvx);
+    if (moveToy - hero.y > 0) vy = buffvy;
+    else vy = -buffvy;
+    if (moveTox - hero.x > 0) vx = buffvx;
+    else vx = -buffvx;
 }
-
 
 // run the render loop
 animate();
+//setTimeout(animate, 200);
 function animate() {
 
     for (var i = 0; i < ox.length; i++){
         obstacles[i].x += - Math.random() + Math.random();
         obstacles[i].y += - Math.random() + Math.random();
     }
+
+    light.y = hero.y += vy;
+    light.x = hero.x += vx;
 
     renderer.render(stage);
     requestAnimationFrame(animate);
