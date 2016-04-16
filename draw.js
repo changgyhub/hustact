@@ -5,8 +5,8 @@ var oy = [50, 150, 250];
 var exitx = 123;
 var exity = 466;
 
-var windowx = 300;
-var windowy = 500;
+var windowx = 900;
+var windowy = 1500;
 
 var moveTox = windowx/2-1, moveToy = windowy/2-1, vx = 0, vy = 0;
 
