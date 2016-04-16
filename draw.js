@@ -1,5 +1,6 @@
 var ox = new Array(1000);
 var oy = new Array(1000);
+
 var collideDis = 9.5;
 var lightScale = 120;
 
@@ -7,6 +8,7 @@ var stageRatio = window.innerWidth/window.innerHeight;
 var windowx = stageRatio * 600;
 var windowy = 600;
 var moveTox = windowx/2-1, moveToy = windowy/2-1, vx = 0, vy = 0;
+var bonus_scalex = Math.random() * windowx * 0.6 + windowx * 0.2, bonus_scaley = Math.random() * windowy * 0.6 + windowy * 0.2;
 
 var exitx;
 var exity;
@@ -139,6 +141,8 @@ var exit = new PIXI.Graphics();
 var obstacles = new Array();
 var light = new PIXI.Graphics();
 var mask = new PIXI.Graphics();
+var bonus_scales = new Array();
+var bonus_scale = new PIXI.Graphics();
 
 // Size the renderer to fill the screen
 resize();
@@ -151,6 +155,15 @@ function resize() {
   renderer.resize(Math.ceil(windowx * ratio), Math.ceil(windowy * ratio));
 }
 
+function add_bonus_scale(){
+    bonus_scale = new PIXI.Graphics();
+    bonus_scale.beginFill(0x00FF00, 1);
+    bonus_scale.x = bonus_scalex = Math.random() * windowx * 0.6 + windowx * 0.2;
+    bonus_scale.y = bonus_scaley = Math.random() * windowy * 0.6 + windowy * 0.2;
+    bonus_scale.drawCircle(0, 0, 5);
+    bonus_scale.endFill();
+    bonus_scale.visible = true;
+}
 
 function add_mask(){
     mask.lineStyle(0);
@@ -221,6 +234,16 @@ add_verge();
 add_exit();
 add_hero();
 
+add_bonus_scale();
+bonus_scales.push(bonus_scale);
+add_bonus_scale();
+bonus_scales.push(bonus_scale);
+add_bonus_scale();
+bonus_scales.push(bonus_scale);
+container.addChild(bonus_scales[0]);
+container.addChild(bonus_scales[1]);
+container.addChild(bonus_scales[2]);
+
 add_obstacles();
 stage.addChild(container);
 
@@ -246,6 +269,20 @@ function onDown (e) {
         var xpos = e.data.getLocalPosition(stage).x;
         var ypos = e.data.getLocalPosition(stage).y;
         if (windowx / xpos < 3 && windowx / xpos > 1.5 && windowy / ypos < 2 && windowy / ypos > 1.5){
+            
+            bonus_scales[0].clear();
+            bonus_scales[1].clear();
+            bonus_scales[2].clear();
+            add_bonus_scale();
+            bonus_scales[0] = bonus_scale;
+            add_bonus_scale();
+            bonus_scales[1] = bonus_scale;
+            add_bonus_scale();
+            bonus_scales[2] = bonus_scale;
+            container.addChild(bonus_scales[0]);
+            container.addChild(bonus_scales[1]);
+            container.addChild(bonus_scales[2]);
+
             running = true;
             currentScore = 999;
             if (lightScale > 120){
@@ -283,6 +320,21 @@ function onDown (e) {
         var xpos = e.data.getLocalPosition(stage).x;
         var ypos = e.data.getLocalPosition(stage).y;
         if (windowx / xpos < 3 && windowx / xpos > 1.5 && windowy / ypos < 2 && windowy / ypos > 1.5){
+
+
+            bonus_scales[0].clear();
+            bonus_scales[1].clear();
+            bonus_scales[2].clear();
+            add_bonus_scale();
+            bonus_scales[0] = bonus_scale;
+            add_bonus_scale();
+            bonus_scales[1] = bonus_scale;
+            add_bonus_scale();
+            bonus_scales[2] = bonus_scale;
+            container.addChild(bonus_scales[0]);
+            container.addChild(bonus_scales[1]);
+            container.addChild(bonus_scales[2]);
+
             running = true;
             dead = false;
             currentScore = 999;
@@ -395,28 +447,21 @@ function checkCollide(){
         sumScore += currentScore;
         output.text = 'You win !!!\nNext Level\nScore: ' + sumScore;
         output.visible = true;
-        var expandScale = lightScale;
-
-
-
-
-        // BUG !!!!!!!!!! cannot expand
-
         changeLight(1500);
-        // while (expandScale < 1500){
-        //     setInterval(function(){ changeLight(expandScale++); }, 20);
-        // }
-
-
-
-
-
-
-
         renderer.render(stage);
         running = false;
         return;
     }
+
+    for (var i = 0; i < 3; ++i){
+        if (distance(bonus_scales[i].x, bonus_scales[i].y) < collideDis && bonus_scales[i].visible){
+            lightScale += 20;
+            changeLight(lightScale);
+            bonus_scales[i].visible = false;
+        }
+    }
+    
+
     for (var i = 0; i < obstacles.length; i++){
         if (distance(obstacles[i].x, obstacles[i].y) < collideDis){
             lightScale -= 20;
