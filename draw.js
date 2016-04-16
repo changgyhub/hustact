@@ -13,7 +13,7 @@ var exity;
 
 var running = true;
 var dead = false;
-var sumscore = 0;
+var sumScore = 0;
 var currentScore = 999;
 
 // ************ generate obstacles **************
@@ -243,8 +243,44 @@ function onDown (e) {
         if (moveTox - hero.x > 0) vx = buffvx;
         else vx = -buffvx;
     } else if (!dead){
-        // TODO
+        var xpos = e.data.getLocalPosition(stage).x;
+        var ypos = e.data.getLocalPosition(stage).y;
+        if (windowx / xpos < 3 && windowx / xpos > 1.5 && windowy / ypos < 2 && windowy / ypos > 1.5){
+            running = true;
+            currentScore = 999;
+            if (lightScale > 120){
+                lightScale = 120 * (2 - 0.5 ^ (lightScale - 120)/20);
+            } else {
+                lightScale = 120;
+            }
+            changeLight(lightScale);
+            generate();
+
+            for (var i = 0; i < obstacles.length; i++){
+                obstacles[i].x = ox[i];
+                obstacles[i].y = oy[i];
+            }
+            exit.clear();
+            exit.lineStyle(40, 0x00ff00, 1);
+            if (!exitx|| exitx == windowx){  //left or right
+                exit.moveTo(exitx,exity-20);
+                exit.lineTo(exitx,exity+20);
+            } else {  // up or bottom
+                exit.moveTo(exitx-20, exity);
+                exit.lineTo(exitx+20,exity);
+            }
+
+            output.visible = false;
+            hero.x = windowx/2;
+            hero.y = windowy/2;
+            vy = vx = 0;
+            animate();
+
+        }
+
+
     } else if (dead){
+        sumScore = Math.floor(sumScore * 0.7);
         var xpos = e.data.getLocalPosition(stage).x;
         var ypos = e.data.getLocalPosition(stage).y;
         if (windowx / xpos < 3 && windowx / xpos > 1.5 && windowy / ypos < 2 && windowy / ypos > 1.5){
@@ -357,16 +393,27 @@ function changeLight(l){
 
 function checkCollide(){
     if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 20 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 20 && Math.abs(hero.x-exitx) < 20)){
-        output.text = 'You win';
+        sumScore += currentScore;
+        output.text = 'You win !!!\nNext Level\nScore: ' + sumScore;
         output.visible = true;
         var expandScale = lightScale;
-        while (expandScale < 1500){
-            setTimeout(changeLight(++expandScale), 2000);
-
-            // Bug : Slowly expand
 
 
-        }
+
+
+        // BUG !!!!!!!!!! cannot expand
+
+        changeLight(1500);
+        // while (expandScale < 1500){
+        //     setInterval(function(){ changeLight(expandScale++); }, 20);
+        // }
+
+
+
+
+
+
+
         renderer.render(stage);
         running = false;
         return;
@@ -394,6 +441,7 @@ function checkCollide(){
 
 
 function gameover(){
+    output.text = 'Game Over\n    Retry!\nScore: ' + sumScore;
     output.visible = true;
     renderer.render(stage);
     running = false;
