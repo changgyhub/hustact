@@ -1,8 +1,9 @@
 var ox = [50, 150, 250];
 var oy = [50, 150, 250];
 
-var windowx = window.innerWidth;
-var windowy = window.innerHeight;
+var stageRatio = window.innerWidth/window.innerHeight;
+var windowx = stageRatio * 600;
+var windowy = 600;
 
 //exitx or exity = 34 or windowx/y - 34
 var exitx = 123;
@@ -100,7 +101,7 @@ function add_hero(){
 }
 
 function add_verge(){
-    verge.lineStyle(8, 0x5e3a08, 1);
+    verge.lineStyle(20, 0x5e3a08, 1);
     verge.beginFill(0xf8ffc9, 1);
     verge.drawRect(0, 0, windowx, windowy);
     verge.endFill();
