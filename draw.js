@@ -1,15 +1,18 @@
 var ox = [50, 150, 250];
 var oy = [50, 150, 250];
 
-var stageRatio = window.innerWidth/window.innerHeight;
-var windowx = stageRatio * 600;
-var windowy = 600;
+// var stageRatio = window.innerWidth/window.innerHeight;
+// var windowx = stageRatio * 600;
+// var windowy = 600;
+var windowx = window.innerWidth;
+var windowy = window.innerHeight;
 
 //exitx or exity = 34 or windowx/y - 34
 var exitx = 123;
 var exity = windowy;
 
 var moveTox = windowx/2-1, moveToy = windowy/2-1, vx = 0, vy = 0;
+var ax = 0; ay = 0;
 
 var rendererOptions = {
   antialiasing: false,
@@ -154,12 +157,18 @@ function onDown (e) {
     moveTox = e.data.getLocalPosition(stage).x;
     moveToy = e.data.getLocalPosition(stage).y;
     var ratio = (moveToy - hero.y) / (moveTox - hero.x);
-    var buffvx = Math.sqrt(5 / (1 + ratio * ratio));
-    var buffvy = Math.sqrt(5 - buffvx * buffvx);
-    if (moveToy - hero.y > 0) vy = buffvy;
-    else vy = -buffvy;
-    if (moveTox - hero.x > 0) vx = buffvx;
-    else vx = -buffvx;
+    var buffvx = Math.sqrt(1 / (1 + ratio * ratio));
+    var buffvy = Math.sqrt(1 - buffvx * buffvx);
+    // if (moveToy - hero.y > 0) vy = buffvy;
+    // else vy = -buffvy;
+    // if (moveTox - hero.x > 0) vx = buffvx;
+    // else vx = -buffvx;
+    if (moveToy - hero.y > 0) ay = buffvy;
+    else ay = -buffvy;
+    if (moveTox - hero.x > 0) ax = buffvx;
+    else ax = -buffvx;
+    vx = 0;
+    vy = 0;
 }
 
 // run the render loop
@@ -173,6 +182,9 @@ function animate() {
         obstacles[i].x += - Math.random() + Math.random();
         obstacles[i].y += - Math.random() + Math.random();
     }
+
+    vx += ax;
+    vy += ay;
 
     light.y = hero.y += vy;
     light.x = hero.x += vx;
