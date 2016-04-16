@@ -136,6 +136,7 @@ renderer.view.style.left = "0px";
 var stage = new PIXI.Container();
 var container = new PIXI.Container();
 var hero = new PIXI.Graphics();
+var bg = new PIXI.Graphics();
 var verge = new PIXI.Graphics();
 var exit = new PIXI.Graphics();
 var obstacles = new Array();
@@ -196,10 +197,16 @@ function add_hero(){
 
 function add_verge(){
     verge.lineStyle(60, 0x5e3a08, 1);
-    verge.beginFill(0xf8ffc9, 1);
     verge.drawRect(0, 0, windowx, windowy);
-    verge.endFill();
     container.addChild(verge);
+}
+
+function add_bg(){
+    bg.lineStyle(60, 0x5e3a08, 1);
+    bg.beginFill(0xf8ffc9, 1);
+    bg.drawRect(0, 0, windowx, windowy);
+    bg.endFill();
+    container.addChild(bg);
 }
 
 function add_exit(){
@@ -230,9 +237,7 @@ function add_obstacles(){
 }
 
 add_mask();
-add_verge();
-add_exit();
-add_hero();
+add_bg();
 
 add_bonus_scale();
 bonus_scales.push(bonus_scale);
@@ -245,6 +250,9 @@ container.addChild(bonus_scales[1]);
 container.addChild(bonus_scales[2]);
 
 add_obstacles();
+add_verge();
+add_hero();
+add_exit();
 stage.addChild(container);
 
 add_light();
@@ -298,7 +306,7 @@ function onDown (e) {
                 obstacles[i].y = oy[i];
             }
             exit.clear();
-            exit.lineStyle(40, 0x00ff00, 1);
+            exit.lineStyle(60, 0x00ff00, 1);
             if (!exitx|| exitx == windowx){  //left or right
                 exit.moveTo(exitx,exity-20);
                 exit.lineTo(exitx,exity+20);
@@ -347,7 +355,7 @@ function onDown (e) {
                 obstacles[i].y = oy[i];
             }
             exit.clear();
-            exit.lineStyle(40, 0x00ff00, 1);
+            exit.lineStyle(60, 0x00ff00, 1);
             if (!exitx|| exitx == windowx){  //left or right
                 exit.moveTo(exitx,exity-20);
                 exit.lineTo(exitx,exity+20);
