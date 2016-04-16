@@ -286,7 +286,7 @@ function onDown (e) {
             running = true;
             currentScore = 999;
             if (lightScale > 100){
-                lightScale = 100 * (2 - 0.5 ^ (lightScale - 100)/20) * 0.75;
+                lightScale = 100 * (2 - Math.pow (0.5, (lightScale - 100)/20)) * 0.6;
             } else {
                 lightScale = 100;
             }
