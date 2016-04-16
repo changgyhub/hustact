@@ -5,50 +5,45 @@ var collideDis = 9.5;
 var stageRatio = window.innerWidth/window.innerHeight;
 var windowx = stageRatio * 600;
 var windowy = 600;
-var moveTox = windowx/2-1, moveToy = windowy/2-1, vx = 0, vy = 0;
 
-var exitx;
-var exity;
-
-
-// ************ generate obstacles **************
-
-var boardx = Math.floor(windowx / collideDis / 4) + 2;  //each unit in board is 2 * collide Distance
-var boardy = Math.floor(windowy / collideDis / 4) + 2; 
-r = new Array(boardx);// = createArray(boardx, boardy);
+// $( document ).ready(function() {
+  var boardx = Math.floor(windowx / collideDis / 4) + 2;  //each unit in board is 2 * collide Distance
+  var boardy = Math.floor(windowy / collideDis / 4) + 2; 
+  r = new Array(boardx);// = createArray(boardx, boardy);
   
-for(var i=0; i<boardx; i++)
+  for(var i=0; i<boardx; i++)
     r[i] = new Array(boardy);
   
-for(var i=0; i<boardx; i++)
+  for(var i=0; i<boardx; i++)
     for(var j=0; j<boardy; j++)
-        r[i][j] = 0;
-for(var i=0; i<boardx; i++){
+      r[i][j] = 0;
+  for(var i=0; i<boardx; i++){
     r[i][0] = -1;
     r[i][boardy-1] = -1;
-}
-for(var i=0; i<boardy; i++){
+  }
+  for(var i=0; i<boardy; i++){
     r[0][i] = -1;
     r[boardx-1][i] = -1;
-}
+  }
 
-var goN = Math.floor((Math.random() * 3) - 1);
-var goE = 0;
-if (goN == 0)
+  var goN = Math.floor((Math.random() * 3) - 1);
+  var goE = 0;
+  if (goN == 0)
     while (goE == 0)
-        goE = Math.floor((Math.random() * 3) - 1);
+      goE = Math.floor((Math.random() * 3) - 1);
 
-r[Math.floor(boardx/2)][Math.floor(boardy/2)] = 1;  
-go(Math.floor(boardx/2), Math.floor(boardy/2), goE, goN);
+  r[Math.floor(boardx/2)][Math.floor(boardy/2)] = 1;  
+  go(Math.floor(boardx/2), Math.floor(boardy/2), goE, goN);
 
-for(var i=1; i<boardx-1; i++){
-    for(var j=1; j<boardy-1; j++){
-        if(r[i][j] == 0){
+  for(var i=1; i<boardx-1; i++){
+      for(var j=1; j<boardy-1; j++){
+          if(r[i][j] == 0){
             ox.push((i-1) * 4 * collideDis + 20);
             oy.push((j-1) * 4 * collideDis + 20);
-        }
-    }
-}
+          }
+      }
+  }
+// });
 
 function check(x, y, xD, yD){
     //check forward
@@ -64,15 +59,9 @@ function check(x, y, xD, yD){
 }
 
 function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
-  if(r[x][y] == -1){
-      exitx = (x - 2) * 4 * collideDis;
-      exity = (y - 2) * 4 * collideDis;
-      if (exitx < 3) exitx = 0;
-      else if (exitx > windowx - 3) exitx = windowx;
-      else if (exity < 3) exity = 0;
-      else exity = windowy;
+  if(r[x][y] == -1)
       return true;
-  }
+  
   //1000 means this route has been checked to be false
   if(r[x][y] == 1000)
       return false;
@@ -101,7 +90,11 @@ function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
 }
 
 
-// ************ UI **************
+//exitx or exity = 34 or windowx/y - 34
+var exitx = 123;
+var exity = windowy;
+
+var moveTox = windowx/2-1, moveToy = windowy/2-1, vx = 0, vy = 0;
 
 var rendererOptions = {
   antialiasing: false,
@@ -111,13 +104,21 @@ var rendererOptions = {
   backgroundColor : 0xFFFFFF,
 }
  
-
-renderer = PIXI.autoDetectRenderer(windowx, windowy, rendererOptions);
+// Create the canvas in which the game will show, and a
+// generic container for all the graphical objects
+renderer = PIXI.autoDetectRenderer(windowx, windowy,
+                                   rendererOptions);
+ 
+// Put the renderer on screen in the corner
 renderer.view.style.position = "absolute";
 renderer.view.style.top = "0px";
 renderer.view.style.left = "0px";
  
+// The stage is essentially a display list of all game objects
+// for Pixi to render; it's used in resize(), so it must exist
+ 
 
+// create the root of the scene graph
 var stage = new PIXI.Container();
 var container = new PIXI.Container();
 var hero = new PIXI.Graphics();
@@ -127,16 +128,32 @@ var obstacles = new Array();
 var light = new PIXI.Graphics();
 var mask = new PIXI.Graphics();
 
+
+ 
 // Size the renderer to fill the screen
 resize();
+ 
+// Actually place the renderer onto the page for display
 document.body.appendChild(renderer.view);
+ 
+// Listen for and adapt to changes to the screen size, e.g.,
+// user changing the window or rotating their device
 window.addEventListener("resize", resize);
 
 function resize() {
-  ratio = Math.min(window.innerWidth/windowx, window.innerHeight/windowy);
+ 
+  // Determine which screen dimension is most constrained
+  ratio = Math.min(window.innerWidth/windowx,
+                   window.innerHeight/windowy);
+ 
+  // Scale the view appropriately to fill that dimension
   stage.scale.x = stage.scale.y = ratio;
-  renderer.resize(Math.ceil(windowx * ratio), Math.ceil(windowy * ratio));
+ 
+  // Update the renderer dimensions
+  renderer.resize(Math.ceil(windowx * ratio),
+                  Math.ceil(windowy * ratio));
 }
+
 
 
 function add_mask(){
@@ -153,7 +170,7 @@ function add_light(){
     light.blendMode = PIXI.BLEND_MODES.ADD;
     light.x = hero.x;
     light.y = hero.y;
-    light.drawCircle(0, 0, 100);
+    light.drawCircle(0, 0, 50);
     light.endFill();
     stage.addChild(light);
 }
@@ -203,7 +220,7 @@ function add_obstacles(){
     }
 }
 
-add_mask();
+//add_mask();
 add_verge();
 add_exit();
 add_hero();
@@ -211,8 +228,8 @@ add_hero();
 add_obstacles();
 stage.addChild(container);
 
-add_light();
-container.mask = light;
+//add_light();
+//container.mask = light;
 
 stage.interactive = true;
 stage.on('mousedown', onDown);
@@ -230,12 +247,9 @@ function onDown (e) {
     else vx = -buffvx;
 }
 
-
-
-// ************** start animation **************
-
-
+// run the render loop
 animate();
+//setTimeout(animate, 200);
 
 
 function animate() {
