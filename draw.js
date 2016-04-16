@@ -2,7 +2,7 @@ var ox = new Array(1000);
 var oy = new Array(1000);
 
 var collideDis = 9.5;
-var lightScale = 120;
+var lightScale = 100;
 
 var stageRatio = window.innerWidth/window.innerHeight;
 var windowx = stageRatio * 600;
@@ -285,10 +285,10 @@ function onDown (e) {
 
             running = true;
             currentScore = 999;
-            if (lightScale > 120){
-                lightScale = 120 * (2 - 0.5 ^ (lightScale - 120)/20);
+            if (lightScale > 100){
+                lightScale = 100 * (2 - 0.5 ^ (lightScale - 100)/20) * 0.75;
             } else {
-                lightScale = 120;
+                lightScale = 100;
             }
             changeLight(lightScale);
             generate();
@@ -338,7 +338,7 @@ function onDown (e) {
             running = true;
             dead = false;
             currentScore = 999;
-            lightScale = 120;
+            lightScale = 100;
             changeLight(lightScale);
             generate();
 
