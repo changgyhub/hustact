@@ -280,7 +280,6 @@ function onDown (e) {
 
 
     } else if (dead){
-        sumScore = Math.floor(sumScore * 0.7);
         var xpos = e.data.getLocalPosition(stage).x;
         var ypos = e.data.getLocalPosition(stage).y;
         if (windowx / xpos < 3 && windowx / xpos > 1.5 && windowy / ypos < 2 && windowy / ypos > 1.5){
@@ -441,6 +440,7 @@ function checkCollide(){
 
 
 function gameover(){
+    sumScore = Math.floor(sumScore * 0.7);
     output.text = 'Game Over\n    Retry!\nScore: ' + sumScore;
     output.visible = true;
     renderer.render(stage);
