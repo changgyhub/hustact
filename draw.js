@@ -102,7 +102,7 @@ function add_hero(){
 function add_verge(){
     verge.lineStyle(8, 0x5e3a08, 1);
     verge.beginFill(0xf8ffc9, 1);
-    verge.drawRect(0, 0, windowx, windowy);
+    verge.drawRect(34, 34, windowx - 68, windowy - 68);
     verge.endFill();
     container.addChild(verge);
 }
