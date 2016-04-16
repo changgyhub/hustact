@@ -74,6 +74,23 @@ function loadDoc() {
 }
 </script>
 
+<div id="sub"><h2>lalala</h2></div>
+
+<button type="button" onclick="submitScore()">submitsc</button>
+
+<script>
+function submitScore() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+     document.getElementById("sub").innerHTML = xhttp.responseText;
+    }
+  };
+  xhttp.open("GET", "http://i.cs.hku.hk/~sjhu/hackust2016/add.php?name=jjj&scoretime=245&score=789", true);
+  xhttp.send();
+}
+</script>
+
 
 </body>
 </html>
