@@ -1,7 +1,7 @@
 var ox = new Array(1000);
 var oy = new Array(1000);
 var collideDis = 9.5;
-var lightScale = 100;
+var lightScale = 120;
 
 var stageRatio = window.innerWidth/window.innerHeight;
 var windowx = stageRatio * 600;
@@ -216,7 +216,7 @@ function add_obstacles(){
     }
 }
 
-//add_mask();
+add_mask();
 add_verge();
 add_exit();
 add_hero();
@@ -224,8 +224,8 @@ add_hero();
 add_obstacles();
 stage.addChild(container);
 
-//add_light();
-//container.mask = light;
+add_light();
+container.mask = light;
 
 stage.interactive = true;
 stage.on('mousedown', onDown);
@@ -251,7 +251,15 @@ function onDown (e) {
             running = true;
             dead = false;
             currentScore = 999;
-            lightScale = 100;
+            lightScale = 120;
+            light.clear()
+            light.lineStyle(0);
+            light.beginFill(0xFFFFFF, 0.5);
+            light.blendMode = PIXI.BLEND_MODES.ADD;
+            light.x = hero.x;
+            light.y = hero.y;
+            light.drawCircle(0, 0, lightScale);
+            light.endFill();
             generate();
 
             for (var i = 0; i < obstacles.length; i++){
@@ -271,6 +279,7 @@ function onDown (e) {
             output.visible = false;
             hero.x = windowx/2;
             hero.y = windowy/2;
+            vy = vx = 0;
             animate();
         }
     }
@@ -348,7 +357,15 @@ function distance(bx, by){
 function checkCollide(){
     if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 20 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 20 && Math.abs(hero.x-exitx) < 20)){
         output.text = 'You win';
-        stage.addChild(output);
+        output.visible = true;
+        light.clear()
+        light.lineStyle(0);
+        light.beginFill(0xFFFFFF, 0.5);
+        light.blendMode = PIXI.BLEND_MODES.ADD;
+        light.x = hero.x;
+        light.y = hero.y;
+        light.drawCircle(0, 0, 999);
+        light.endFill();
         renderer.render(stage);
         running = false;
         return;
@@ -356,11 +373,14 @@ function checkCollide(){
     for (var i = 0; i < obstacles.length; i++){
         if (distance(obstacles[i].x, obstacles[i].y) < collideDis){
             lightScale -= 20;
-
-
-            // !!!!!!!!!!!   Bug : cannot shrink lightScale   !!!!!!!!!!!
-
-
+            light.clear()
+            light.lineStyle(0);
+            light.beginFill(0xFFFFFF, 0.5);
+            light.blendMode = PIXI.BLEND_MODES.ADD;
+            light.x = hero.x;
+            light.y = hero.y;
+            light.drawCircle(0, 0, lightScale);
+            light.endFill();
             obstacles[i].x += - Math.random()*20 + Math.random()*20;
             obstacles[i].y += - Math.random()*20 + Math.random()*20;
             if (!lightScale){
