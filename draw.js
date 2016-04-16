@@ -5,13 +5,32 @@ var oy = [50, 150, 250];
 var exitx = 123;
 var exity = 466;
 
-var windowx = 900;
-var windowy = 1500;
+var windowx = 300;
+var windowy = 500;
 
 var moveTox = windowx/2-1, moveToy = windowy/2-1, vx = 0, vy = 0;
 
-var renderer = PIXI.autoDetectRenderer(windowx, windowy,{backgroundColor : 0xFFFFFF});
-document.body.appendChild(renderer.view);
+var rendererOptions = {
+  antialiasing: false,
+  transparent: false,
+  resolution: window.devicePixelRatio,
+  autoResize: true,
+  backgroundColor : 0xFFFFFF,
+}
+ 
+// Create the canvas in which the game will show, and a
+// generic container for all the graphical objects
+renderer = PIXI.autoDetectRenderer(windowx, windowy,
+                                   rendererOptions);
+ 
+// Put the renderer on screen in the corner
+renderer.view.style.position = "absolute";
+renderer.view.style.top = "0px";
+renderer.view.style.left = "0px";
+ 
+// The stage is essentially a display list of all game objects
+// for Pixi to render; it's used in resize(), so it must exist
+ 
 
 // create the root of the scene graph
 var stage = new PIXI.Container();
@@ -22,6 +41,34 @@ var exit = new PIXI.Graphics();
 var obstacles = new Array();
 var light = new PIXI.Graphics();
 var mask = new PIXI.Graphics();
+
+
+ 
+// Size the renderer to fill the screen
+resize();
+ 
+// Actually place the renderer onto the page for display
+document.body.appendChild(renderer.view);
+ 
+// Listen for and adapt to changes to the screen size, e.g.,
+// user changing the window or rotating their device
+window.addEventListener("resize", resize);
+
+function resize() {
+ 
+  // Determine which screen dimension is most constrained
+  ratio = Math.min(window.innerWidth/windowx,
+                   window.innerHeight/windowy);
+ 
+  // Scale the view appropriately to fill that dimension
+  stage.scale.x = stage.scale.y = ratio;
+ 
+  // Update the renderer dimensions
+  renderer.resize(Math.ceil(windowx * ratio),
+                  Math.ceil(windowy * ratio));
+}
+
+
 
 function add_mask(){
     mask.lineStyle(0);
