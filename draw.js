@@ -109,7 +109,7 @@ function add_verge(){
 }
 
 function add_exit(){
-    exit.lineStyle(8, 0x00ff00, 1);
+    exit.lineStyle(40, 0x00ff00, 1);
     if (!exitx|| exitx == windowx){  //left or right
         exit.moveTo(exitx,exity-10);
         exit.lineTo(exitx,exity+10);
