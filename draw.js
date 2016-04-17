@@ -80,13 +80,13 @@ function check(x, y, xD, yD){
 
 function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
   if(r[x][y] == -1){
-        exitx = (x - 2) * 4 * collideDis;
-        exity = (y - 2) * 4 * collideDis;
-        if (exitx < 3) exitx = 0;
-        else if (exitx > windowx - 3) exitx = windowx;
-        else if (exity < 3) exity = 0;
-        else exity = windowy;
-        return true;
+      exitx = (x - 2) * 4 * collideDis;
+      exity = (y - 2) * 4 * collideDis;
+      if (exitx < 3) exitx = 0;
+      else if (exitx > windowx - 3) exitx = windowx;
+      else if (exity < 3) exity = 0;
+      else exity = windowy;
+      return true;
   }
   //1000 means this route has been checked to be false
   if(r[x][y] == 1000)
