@@ -80,13 +80,13 @@ function check(x, y, xD, yD){
 
 function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
   if(r[x][y] == -1){
-      exitx = (x - 2) * 4 * collideDis;
-      exity = (y - 2) * 4 * collideDis;
-      if (exitx < 3) exitx = 0;
-      else if (exitx > windowx - 3) exitx = windowx;
-      else if (exity < 3) exity = 0;
-      else exity = windowy;
-      return true;
+        exitx = (x - 2) * 4 * collideDis;
+        exity = (y - 2) * 4 * collideDis;
+        if (exitx < 3) exitx = 0;
+        else if (exitx > windowx - 3) exitx = windowx;
+        else if (exity < 3) exity = 0;
+        else exity = windowy;
+        return true;
   }
   //1000 means this route has been checked to be false
   if(r[x][y] == 1000)
@@ -207,13 +207,13 @@ function add_hero(){
 }
 
 function add_verge(){
-    verge.lineStyle(60, 0x5e3a08, 1);
+    verge.lineStyle(40, 0x5e3a08, 1);
     verge.drawRect(0, 0, windowx, windowy);
     container.addChild(verge);
 }
 
 function add_bg(){
-    bg.lineStyle(60, 0x5e3a08, 1);
+    bg.lineStyle(40, 0x5e3a08, 1);
     bg.beginFill(0xf8ffc9, 1);
     bg.drawRect(0, 0, windowx, windowy);
     bg.endFill();
@@ -221,7 +221,7 @@ function add_bg(){
 }
 
 function add_exit(){
-    exit.lineStyle(60, 0x00ff00, 1);
+    exit.lineStyle(40, 0x00ff00, 1);
     if (!exitx|| exitx == windowx){  //left or right
         exit.moveTo(exitx,exity-20);
         exit.lineTo(exitx,exity+20);
@@ -327,7 +327,7 @@ function onDown (e) {
                 obstacles[i].y = oy[i];
             }
             exit.clear();
-            exit.lineStyle(60, 0x00ff00, 1);
+            exit.lineStyle(40, 0x00ff00, 1);
             if (!exitx|| exitx == windowx){  //left or right
                 exit.moveTo(exitx,exity-20);
                 exit.lineTo(exitx,exity+20);
@@ -386,7 +386,7 @@ function onDown (e) {
                 obstacles[i].y = oy[i];
             }
             exit.clear();
-            exit.lineStyle(60, 0x00ff00, 1);
+            exit.lineStyle(40, 0x00ff00, 1);
             if (!exitx|| exitx == windowx){  //left or right
                 exit.moveTo(exitx,exity-20);
                 exit.lineTo(exitx,exity+20);
@@ -487,7 +487,7 @@ function timeoutChange(){
 }
 
 function checkCollide(){
-    if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 30 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 30 && Math.abs(hero.x-exitx) < 20)){
+    if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 20 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 20 && Math.abs(hero.x-exitx) < 20)){
         sumScore += currentScore;
         output.text = 'You win !!!\nNext Level\nScore: ' + sumScore;
         output.visible = true;
