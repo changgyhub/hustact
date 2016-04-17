@@ -22,45 +22,47 @@ var currentScore = 999;
 
 var boardx = Math.floor(windowx / collideDis / 4) + 2;  //each unit in board is 2 * collide Distance
 var boardy = Math.floor(windowy / collideDis / 4) + 2; 
+var obstacleLeftDist = Math.floor((windowx % (4 * collideDis)) / 2); 
+var obstacleUpperDist = Math.floor((windowy % (4 * collideDis)) / 2); 
 var goN, goE;
 generate();
 
 function generate(){
-    r = new Array(boardx);// = createArray(boardx, boardy);
-  
-    for(var i=0; i<boardx; i++)
-        r[i] = new Array(boardy);
-  
-    for(var i=0; i<boardx; i++)
-        for(var j=0; j<boardy; j++)
-            r[i][j] = 0;
-    for(var i=0; i<boardx; i++){
-        r[i][0] = -1;
-        r[i][boardy-1] = -1;
-    }
-    for(var i=0; i<boardy; i++){
-        r[0][i] = -1;
-        r[boardx-1][i] = -1;
-    }
-    ox = new Array(1000);
-    oy = new Array(1000);
-    goN = Math.floor((Math.random() * 3) - 1);
-    goE = 0;
-    if (goN == 0)
-        while (goE == 0)
-            goE = Math.floor((Math.random() * 3) - 1);
+   r = new Array(boardx);// = createArray(boardx, boardy);
 
-    r[Math.floor(boardx/2)][Math.floor(boardy/2)] = 1;  
-    go(Math.floor(boardx/2), Math.floor(boardy/2), goE, goN);
+   for(var i=0; i<boardx; i++)
+       r[i] = new Array(boardy);
 
-    for(var i=1; i<boardx-1; i++){
-        for(var j=1; j<boardy-1; j++){
-            if(r[i][j] == 0){
-                ox.push((i-1) * 4 * collideDis + 20);
-                oy.push((j-1) * 4 * collideDis + 20);
-            }
-        }
-    }
+   for(var i=0; i<boardx; i++)
+       for(var j=0; j<boardy; j++)
+           r[i][j] = 0;
+   for(var i=0; i<boardx; i++){
+       r[i][0] = -1;
+       r[i][boardy-1] = -1;
+   }
+   for(var i=0; i<boardy; i++){
+       r[0][i] = -1;
+       r[boardx-1][i] = -1;
+   }
+   ox = new Array(0);
+   oy = new Array(0);
+   goN = Math.floor((Math.random() * 3) - 1);
+   goE = 0;
+   if (goN == 0)
+       while (goE == 0)
+           goE = Math.floor((Math.random() * 3) - 1);
+
+   r[Math.floor(boardx/2)][Math.floor(boardy/2)] = 1;  
+   go(Math.floor(boardx/2), Math.floor(boardy/2), goE, goN);
+
+   for(var i=1; i<boardx-1; i++){
+       for(var j=1; j<boardy-1; j++){
+           if(r[i][j] == 0){
+               ox.push((i-1) * 4 * collideDis + obstacleLeftDist);
+               oy.push((j-1) * 4 * collideDis + obstacleUpperDist);
+           }
+       }
+   }
 }
 
 
@@ -79,21 +81,21 @@ function check(x, y, xD, yD){
 }
 
 function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
-  if(r[x][y] == -1){
-      exitx = (x - 2) * 4 * collideDis;
-      exity = (y - 2) * 4 * collideDis;
-      if (exitx < 3) exitx = 0;
-      else if (exitx > windowx - 3) exitx = windowx;
-      else if (exity < 3) exity = 0;
-      else exity = windowy;
-      return true;
-  }
-  //1000 means this route has been checked to be false
-  if(r[x][y] == 1000)
-      return false;
-  while(true){
-    if(!check(x, y, xD, yD)){
-        r[x][y] = 1000;
+    if(r[x][y] == -1){
+        exitx = (x - 2) * 4 * collideDis;
+        exity = (y - 2) * 4 * collideDis;
+        if (exitx < 3) exitx = 0;
+        else if (exitx > windowx - 3) exitx = windowx;
+        else if (exity < 3) exity = 0;
+        else exity = windowy;
+        return true;
+    }
+    //1000 means this route has been checked to be false
+    if(r[x][y] == 1000)
+        return false;
+    while(true){
+        if(!check(x, y, xD, yD)){
+            r[x][y] = 1000;
         return false;
     }
     var goN = Math.floor((Math.random() * 4) - 1);
@@ -119,7 +121,7 @@ function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
 // ************ UI **************
 
 var rendererOptions = {
-  antialiasing: true,
+  antialiasing: false,
   transparent: false,
   resolution: window.devicePixelRatio,
   autoResize: true,
@@ -207,13 +209,13 @@ function add_hero(){
 }
 
 function add_verge(){
-    verge.lineStyle(60, 0x5e3a08, 1);
+    verge.lineStyle(40, 0x5e3a08, 1);
     verge.drawRect(0, 0, windowx, windowy);
     container.addChild(verge);
 }
 
 function add_bg(){
-    bg.lineStyle(60, 0x5e3a08, 1);
+    bg.lineStyle(40, 0x5e3a08, 1);
     bg.beginFill(0xf8ffc9, 1);
     bg.drawRect(0, 0, windowx, windowy);
     bg.endFill();
@@ -221,7 +223,7 @@ function add_bg(){
 }
 
 function add_exit(){
-    exit.lineStyle(60, 0x00ff00, 1);
+    exit.lineStyle(40, 0x00ff00, 1);
     if (!exitx|| exitx == windowx){  //left or right
         exit.moveTo(exitx,exity-20);
         exit.lineTo(exitx,exity+20);
@@ -327,7 +329,7 @@ function onDown (e) {
                 obstacles[i].y = oy[i];
             }
             exit.clear();
-            exit.lineStyle(60, 0x00ff00, 1);
+            exit.lineStyle(40, 0x00ff00, 1);
             if (!exitx|| exitx == windowx){  //left or right
                 exit.moveTo(exitx,exity-20);
                 exit.lineTo(exitx,exity+20);
@@ -386,7 +388,7 @@ function onDown (e) {
                 obstacles[i].y = oy[i];
             }
             exit.clear();
-            exit.lineStyle(60, 0x00ff00, 1);
+            exit.lineStyle(40, 0x00ff00, 1);
             if (!exitx|| exitx == windowx){  //left or right
                 exit.moveTo(exitx,exity-20);
                 exit.lineTo(exitx,exity+20);
@@ -487,7 +489,7 @@ function timeoutChange(){
 }
 
 function checkCollide(){
-    if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 30 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 30 && Math.abs(hero.x-exitx) < 20)){
+    if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 20 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 20 && Math.abs(hero.x-exitx) < 20)){
         sumScore += currentScore;
         output.text = 'You win !!!\nNext Level\nScore: ' + sumScore;
         output.visible = true;
@@ -526,7 +528,7 @@ function checkCollide(){
             }
             break;
         }
-        if (hero.x < 25 || hero.x > windowx - 25 || hero.y < 25 || hero.y > windowy - 25){
+        if (hero.x < 15 || hero.x > windowx - 15 || hero.y < 15 || hero.y > windowy - 15){
             gameover();
             return;
         }
