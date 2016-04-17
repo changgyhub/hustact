@@ -119,7 +119,7 @@ function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
 // ************ UI **************
 
 var rendererOptions = {
-  antialiasing: true,
+  antialiasing: false,
   transparent: false,
   resolution: window.devicePixelRatio,
   autoResize: true,
@@ -526,7 +526,7 @@ function checkCollide(){
             }
             break;
         }
-        if (hero.x < 25 || hero.x > windowx - 25 || hero.y < 25 || hero.y > windowy - 25){
+        if (hero.x < 15 || hero.x > windowx - 15 || hero.y < 15 || hero.y > windowy - 15){
             gameover();
             return;
         }
