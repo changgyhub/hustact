@@ -119,7 +119,7 @@ function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
 // ************ UI **************
 
 var rendererOptions = {
-  antialiasing: false,
+  antialiasing: true,
   transparent: false,
   resolution: window.devicePixelRatio,
   autoResize: true,
@@ -424,7 +424,7 @@ stage.addChild(score);
 
 var output = new PIXI.Text('Game Over\n    Retry!',{
         font : 'bold italic 36px Arial',
-        fill : '#F7EDCA',
+        fill : '#FFFFFF',
         stroke : '#4a1850',
         strokeThickness : 5,
         dropShadow : true,
@@ -435,7 +435,7 @@ var output = new PIXI.Text('Game Over\n    Retry!',{
         wordWrapWidth : 440
     });
 output.x = windowx/2 - 90;
-output.y = windowy/2 - 30;
+output.y = windowy/2 - 50;
 output.visible = false;
 stage.addChild(output);
 
@@ -520,7 +520,7 @@ function checkCollide(){
             changeLight(lightScale);
             obstacles[i].x += - Math.random()*20 + Math.random()*20;
             obstacles[i].y += - Math.random()*20 + Math.random()*20;
-            if (!lightScale){
+            if (lightScale < 20){
                 gameover();
                 return;
             }
