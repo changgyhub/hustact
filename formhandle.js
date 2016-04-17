@@ -3,6 +3,10 @@ function guestReg() {
   loadDraw();
 }
 
+function updateScore() {
+  document.getElementById('myScore').innerHTML = "<h4>My Score: "+ sumScore +"</h4>";
+}
+
   function loadDoc() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
