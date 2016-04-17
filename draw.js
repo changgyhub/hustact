@@ -22,45 +22,47 @@ var currentScore = 999;
 
 var boardx = Math.floor(windowx / collideDis / 4) + 2;  //each unit in board is 2 * collide Distance
 var boardy = Math.floor(windowy / collideDis / 4) + 2; 
+var obstacleLeftDist = Math.floor((windowx % (4 * collideDis)) / 2); 
+var obstacleUpperDist = Math.floor((windowy % (4 * collideDis)) / 2); 
 var goN, goE;
 generate();
 
 function generate(){
-    r = new Array(boardx);// = createArray(boardx, boardy);
-  
-    for(var i=0; i<boardx; i++)
-        r[i] = new Array(boardy);
-  
-    for(var i=0; i<boardx; i++)
-        for(var j=0; j<boardy; j++)
-            r[i][j] = 0;
-    for(var i=0; i<boardx; i++){
-        r[i][0] = -1;
-        r[i][boardy-1] = -1;
-    }
-    for(var i=0; i<boardy; i++){
-        r[0][i] = -1;
-        r[boardx-1][i] = -1;
-    }
-    ox = new Array(1000);
-    oy = new Array(1000);
-    goN = Math.floor((Math.random() * 3) - 1);
-    goE = 0;
-    if (goN == 0)
-        while (goE == 0)
-            goE = Math.floor((Math.random() * 3) - 1);
+   r = new Array(boardx);// = createArray(boardx, boardy);
 
-    r[Math.floor(boardx/2)][Math.floor(boardy/2)] = 1;  
-    go(Math.floor(boardx/2), Math.floor(boardy/2), goE, goN);
+   for(var i=0; i<boardx; i++)
+       r[i] = new Array(boardy);
 
-    for(var i=1; i<boardx-1; i++){
-        for(var j=1; j<boardy-1; j++){
-            if(r[i][j] == 0){
-                ox.push((i-1) * 4 * collideDis + 20);
-                oy.push((j-1) * 4 * collideDis + 20);
-            }
-        }
-    }
+   for(var i=0; i<boardx; i++)
+       for(var j=0; j<boardy; j++)
+           r[i][j] = 0;
+   for(var i=0; i<boardx; i++){
+       r[i][0] = -1;
+       r[i][boardy-1] = -1;
+   }
+   for(var i=0; i<boardy; i++){
+       r[0][i] = -1;
+       r[boardx-1][i] = -1;
+   }
+   ox = new Array(0);
+   oy = new Array(0);
+   goN = Math.floor((Math.random() * 3) - 1);
+   goE = 0;
+   if (goN == 0)
+       while (goE == 0)
+           goE = Math.floor((Math.random() * 3) - 1);
+
+   r[Math.floor(boardx/2)][Math.floor(boardy/2)] = 1;  
+   go(Math.floor(boardx/2), Math.floor(boardy/2), goE, goN);
+
+   for(var i=1; i<boardx-1; i++){
+       for(var j=1; j<boardy-1; j++){
+           if(r[i][j] == 0){
+               ox.push((i-1) * 4 * collideDis + obstacleLeftDist);
+               oy.push((j-1) * 4 * collideDis + obstacleUpperDist);
+           }
+       }
+   }
 }
 
 
@@ -79,21 +81,21 @@ function check(x, y, xD, yD){
 }
 
 function go(x, y, xD, yD){      //direction change on x & y, exactly one to be 0
-  if(r[x][y] == -1){
-      exitx = (x - 2) * 4 * collideDis;
-      exity = (y - 2) * 4 * collideDis;
-      if (exitx < 3) exitx = 0;
-      else if (exitx > windowx - 3) exitx = windowx;
-      else if (exity < 3) exity = 0;
-      else exity = windowy;
-      return true;
-  }
-  //1000 means this route has been checked to be false
-  if(r[x][y] == 1000)
-      return false;
-  while(true){
-    if(!check(x, y, xD, yD)){
-        r[x][y] = 1000;
+    if(r[x][y] == -1){
+        exitx = (x - 2) * 4 * collideDis;
+        exity = (y - 2) * 4 * collideDis;
+        if (exitx < 3) exitx = 0;
+        else if (exitx > windowx - 3) exitx = windowx;
+        else if (exity < 3) exity = 0;
+        else exity = windowy;
+        return true;
+    }
+    //1000 means this route has been checked to be false
+    if(r[x][y] == 1000)
+        return false;
+    while(true){
+        if(!check(x, y, xD, yD)){
+            r[x][y] = 1000;
         return false;
     }
     var goN = Math.floor((Math.random() * 4) - 1);
