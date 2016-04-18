@@ -13,7 +13,7 @@ var bonus_scalex = Math.random() * windowx * 0.6 + windowx * 0.2, bonus_scaley =
 
 var exitx;
 var exity;
-var densityVar = 5;
+var densityVar = 8;
 
 var running = true;
 var dead = false;
@@ -27,6 +27,7 @@ var boardy;
 var obstacleLeftDist;
 var obstacleUpperDist;
 var goN, goE;
+var r;
 generate();
 
 function generate(){
@@ -50,8 +51,8 @@ function generate(){
        r[0][i] = -1;
        r[boardx-1][i] = -1;
    }
-   ox = new Array(0);
-   oy = new Array(0);
+   ox = [];
+   oy = [];
    goN = Math.floor((Math.random() * 3) - 1);
    goE = 0;
    if (goN == 0)
@@ -69,6 +70,8 @@ function generate(){
            }
        }
    }
+
+   alert(ox.length);
 }
 
 
@@ -146,8 +149,8 @@ var container = new PIXI.Container();
 var hero = new PIXI.Graphics();
 var bg = new PIXI.Graphics();
 var verge = new PIXI.Graphics();
+var obstacles;
 var exit = new PIXI.Graphics();
-var obstacles = new Array();
 var light = new PIXI.Graphics();
 var mask = new PIXI.Graphics();
 var bonus_scales = new Array();
@@ -242,6 +245,7 @@ function add_exit(){
 
 
 function add_obstacles(){
+    obstacles = new Array();
     for (var i = 0; i < ox.length; i++){
         var obstacle = new PIXI.Graphics();
         obstacle.lineStyle(0);
@@ -336,12 +340,30 @@ function onDown (e) {
                 lightScale = 100;
             }
             changeLight(lightScale);
+            if (densityVar > 2) {
+                densityVar = densityVar - 1;
+            }
             generate();
 
-            for (var i = 0; i < obstacles.length; i++){
-                obstacles[i].x = ox[i];
-                obstacles[i].y = oy[i];
+            // add_obstacles();
+            obstacles = [];
+            for (var i = 0; i < ox.length; i++){
+                var obstacle = new PIXI.Graphics();
+                obstacle.lineStyle(0);
+                obstacle.beginFill(0xff0000, 1);
+                obstacle.x = ox[i];
+                obstacle.y = oy[i];
+                obstacle.drawCircle(0, 0, 5);
+                obstacle.endFill();
+                obstacles.push(obstacle);
+                container.addChild(obstacles[i]);
             }
+
+            // obstacles = new Array();
+            // for (var i = 0; i < ox.length; i++){
+            //     obstacles[i].x = ox[i];
+            //     obstacles[i].y = oy[i];
+            // }
             exit.clear();
             exit.lineStyle(40, 0x00ff00, 1);
             if (!exitx|| exitx == windowx){  //left or right
@@ -510,11 +532,8 @@ function timeoutChange(){
 function checkCollide(){
     if (((!exitx || exitx == windowx) && Math.abs(hero.x-exitx) < 20 && Math.abs(hero.y-exity) < 20) || ((!exity || exity == windowy) && Math.abs(hero.y-exity) < 20 && Math.abs(hero.x-exitx) < 20)){
         sumScore += currentScore;
-        output.text = 'You win !!!\nNext Level! \nScore: ' + sumScore;
-        // output.text = 'You win !!!\nNext: Level '+(16- densityVar)*2 +'\nScore: ' + sumScore;
-        // if (densityVar > 2) {
-        //     densityVar = densityVar/2;
-        // }
+        // output.text = 'You win !!!\nNext Level! \nScore: ' + sumScore;
+        output.text = 'You win !!!\nNext: Level '+(16 - densityVar) +'\nScore: ' + sumScore;
         output.visible = true;
         changeLight(1500);
         renderer.render(stage);
