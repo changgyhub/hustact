@@ -8,4 +8,4 @@ Presented by team *ideasquare@hku*
 
 ### Options
  * version: [normal](https://irsisyphus.github.io/HustACK "normal")
- * version: [accelerated](https://irsisyphus.github.io/HustACKacc "accelerated")
+ * version: [accelerated](https://irsisyphus.github.io/HustACK/acc "accelerated")
