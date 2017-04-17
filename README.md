@@ -1,5 +1,5 @@
 # HustACK - Find the way out!
-Presented by team ideasquare@hku*
+Presented by team *ideasquare@hku*
 
 ### Author
 [Chang Gao](http://www.linkedin.com/in/irsisyphus "linkedin")<br>
